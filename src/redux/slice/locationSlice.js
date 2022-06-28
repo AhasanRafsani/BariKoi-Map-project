@@ -3,11 +3,20 @@ import { createSlice , createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const getLocation = createAsyncThunk("location/getLocation",
-  async(searchLocation)=>{
-    const result = await axios.get(`https://barikoi.xyz/v1/api/search/autocomplete/MzE0ODpIRUgzN0lYSTZR/place?q=${searchLocation}`); 
+  async(searchLocation,{rejectWithValue})=>{
+     try{
+        const result = await axios.get(process.env.REACT_APP_BAKCEND_API+searchLocation); 
  
-    console.log(result.data.places);
-    return result.data.places;
+        //console.log(result);
+        if(result.data.message){
+           return result.data.message;
+        }
+        else{
+           return result.data.places;
+        }
+      }catch(err){
+         return rejectWithValue(err.message);
+      }
   } 
 );
 
@@ -16,27 +25,37 @@ export const locationSlice = createSlice({
       initialState:{
           loading:false,
           hasError:null,
-          location:[],
+          locationHasData:[],
+          locationHasNoData:null,
           singleLocation:{},
-          showDetailsBox:false
+          
     
       },
       reducers:{
          getSingleLocation:(state,action)=>{
-             const findLoc = state.location.find((val)=> val.id === action.payload);
+             const findLoc = state.locationHasData.find((val)=> val.id === action.payload);
              state.singleLocation = findLoc;
          },
-         setDetailsBox:(state,action)=>{
-            state.showDetailsBox = action.payload
+         emptySingleLocation:(state)=>{
+            state.singleLocation={};
+         },
+         emptyLocation:(state)=>{
+            state.locationHasData=[];
          }
+         
       },
       extraReducers:{
-         [getLocation.pending]:(state,action)=>{
-             state.loading=true
+         [getLocation.pending]:(state)=>{
+             state.loading=true;
          },
          [getLocation.fulfilled]:(state,action)=>{
             state.loading=false;
-            state.location = action.payload;
+
+            if(action.payload==="Address not found"){
+               state.locationHasNoData = action.payload;
+            }else{
+               state.locationHasData = action.payload;
+            }
          },
          [getLocation.rejected]:(state,action)=>{
             state.loading=false;
@@ -46,6 +65,6 @@ export const locationSlice = createSlice({
 
 });
 
-export const {getSingleLocation,setDetailsBox} = locationSlice.actions
+export const {getSingleLocation,emptySingleLocation,emptyLocation} = locationSlice.actions
 
 
