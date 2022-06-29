@@ -1,3 +1,4 @@
+import React from "react";
 import {useSelector} from "react-redux";
 import SingleList from "./SingleList";
 
@@ -18,6 +19,7 @@ const LocationList = ()=>{
                         }
                     </ul>
             </div>
+          
         </>
     )
 }

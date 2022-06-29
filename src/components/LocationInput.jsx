@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React,{useEffect} from "react";
 import { ImSearch } from "react-icons/im";
 import { MdOutlineCancel } from "react-icons/md";
 import { useDispatch,useSelector } from "react-redux";
@@ -19,15 +19,15 @@ const LocationInput = ({searchLocation , setSearchLocation})=>{
          if(debaunceSearchLocation !== ""){
               dispatch(getLocation(debaunceSearchLocation))
           }
-      },[debaunceSearchLocation]);
+      },[debaunceSearchLocation,dispatch]);
 
     useEffect(()=>{
-         if(debaunceSearchLocation == ""){
+         if(debaunceSearchLocation === ""){
              dispatch(emptySingleLocation());
              dispatch(emptyLocation());
         }
            
-       },[debaunceSearchLocation]);
+       },[debaunceSearchLocation,dispatch]);
     
     const handleCancle = ()=>{
         setSearchLocation("");

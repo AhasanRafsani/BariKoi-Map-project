@@ -41,6 +41,7 @@ export const locationSlice = createSlice({
          },
          emptyLocation:(state)=>{
             state.locationHasData=[];
+            state.locationHasNoData = null;
          }
          
       },
@@ -55,6 +56,7 @@ export const locationSlice = createSlice({
                state.locationHasNoData = action.payload;
             }else{
                state.locationHasData = action.payload;
+               state.locationHasNoData = null;
             }
          },
          [getLocation.rejected]:(state,action)=>{

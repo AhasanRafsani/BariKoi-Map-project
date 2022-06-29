@@ -42,20 +42,21 @@ function App() {
   
   useEffect(()=>{
      
-     if(locationHasNoData) {
-      
-      toast.warn('Address not found', {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-   
-        });
-     }
-   },[locationHasNoData]);
+    if(locationHasNoData) {
+     
+     toast.warn('Address not found', {
+       position: "top-center",
+       theme: "colored",
+       autoClose: 2000,
+       hideProgressBar: false,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: true,
+       progress: undefined,
+  
+       });
+    }
+  },[locationHasNoData]);
   
 return (
 
@@ -74,7 +75,7 @@ return (
                                         pType={singleLocation.pType}/>  :  locationHasData.length !==0   && <LocationList/> 
                                         
                   }
-                  <ToastContainer/>
+                
                 </div>
         
             </div>
@@ -92,7 +93,7 @@ return (
                                         pType={singleLocation.pType}/>  :  locationHasData.length !==0   && <LocationList/>
                                         
                    }
-                   <ToastContainer />
+                   
                 </div>
                 <Map
                  {...viewState}
@@ -111,7 +112,8 @@ return (
                   <ImLocation2 style={{fontSize:viewState.zoom *3}} className={singleLocation.pType === "Admin" ? 'text-emerald-900' : 'text-red-600'}/> 
                   </Marker>
                 </Map> 
-            </div>        
+            </div>
+            <ToastContainer/>  
         </div>              
             
 
